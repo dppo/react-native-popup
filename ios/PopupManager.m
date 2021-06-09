@@ -96,7 +96,7 @@ static PopupManager* _instance = nil;
             [self replacePopupContentView:self.bottomSheet moduleName:moduleName];
         }
     }else {
-        self.bottomSheet = [self showPopup:moduleName showType:FFPopupShowType_GrowIn dismissType:FFPopupDismissType_ShrinkOut maskType:FFPopupMaskType_Dimmed delay:0.0];
+        self.bottomSheet = [self showPopup:moduleName showType:FFPopupShowType_SlideInFromBottom dismissType:FFPopupDismissType_SlideOutToBottom maskType:FFPopupMaskType_Dimmed delay:0.0];
         @PopWeakObj(self);
         [self.bottomSheet setDidFinishDismissingBlock:^{
             [selfWeak.bottomSheet.contentView removeFromSuperview];
@@ -145,7 +145,7 @@ static PopupManager* _instance = nil;
             [self replacePopupContentView:self.toast moduleName:moduleName];
         }
     }else {
-        self.toast = [self showPopup:moduleName showType:FFPopupShowType_GrowIn dismissType:FFPopupDismissType_ShrinkOut maskType:FFPopupMaskType_Dimmed delay:delay];
+        self.toast = [self showPopup:moduleName showType:FFPopupShowType_FadeIn dismissType:FFPopupDismissType_FadeOut maskType:FFPopupMaskType_Clear delay:delay];
         @PopWeakObj(self);
         [self.toast setDidFinishDismissingBlock:^{
             [selfWeak.toast.contentView removeFromSuperview];
@@ -267,6 +267,11 @@ static PopupManager* _instance = nil;
         }
     }
     return nil;
+}
+
+- (dispatch_queue_t)methodQueue
+{
+  return dispatch_get_main_queue();
 }
 
 @end

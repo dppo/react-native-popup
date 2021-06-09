@@ -1,4 +1,4 @@
-package com.reactnativepopup;
+package com.popup;
 
 import androidx.annotation.NonNull;
 

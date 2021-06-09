@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Popup from 'react-native-popup';
+import RNRestart from 'react-native-restart';
 
 export default function App() {
   const alert = () => {
@@ -14,13 +15,13 @@ export default function App() {
       <View
         style={{
           flex: 1,
-          justifyContent: 'center',
+          justifyContent: 'flex-end',
           alignItems: 'center',
         }}
       >
         <TouchableWithoutFeedback
           onPress={() => {
-            Popup.hideToast();
+            Popup.hideBottomSheet();
           }}
         >
           <View
@@ -33,7 +34,22 @@ export default function App() {
             }}
           />
         </TouchableWithoutFeedback>
-        <View style={{ width: 300, height: 200, backgroundColor: 'white' }} />
+        <View
+          style={{
+            width: 300,
+            height: 200,
+            backgroundColor: 'yellow',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Button
+            title="重启"
+            onPress={() => {
+              RNRestart.Restart();
+            }}
+          />
+        </View>
       </View>
     );
   };
@@ -43,13 +59,13 @@ export default function App() {
       <View
         style={{
           flex: 1,
-          justifyContent: 'center',
+          justifyContent: 'flex-end',
           alignItems: 'center',
         }}
       >
         <TouchableWithoutFeedback
           onPress={() => {
-            Popup.hideToast();
+            Popup.hideBottomSheet();
           }}
         >
           <View
@@ -70,23 +86,36 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Button
+        title="重启"
+        onPress={() => {
+          RNRestart.Restart();
+        }}
+      />
+      <Button
+        title="显示"
+        onPress={() => {
+          AppRegistry.registerComponent('aaa', () => alert);
+          Popup.showBottomSheet('aaa');
+        }}
+      />
+      <Button
         title="显示替换"
         onPress={() => {
           AppRegistry.registerComponent('aaa', () => alert);
-          Popup.showToast('aaa', 3);
+          Popup.showBottomSheet('aaa');
           setTimeout(() => {
             AppRegistry.registerComponent('bbb', () => alert2);
-            Popup.showToast('bbb', 3);
-          }, 100);
+            Popup.showBottomSheet('bbb');
+          }, 10);
         }}
       />
       <Button
         title="快速隐藏"
         onPress={() => {
           AppRegistry.registerComponent('aaa', () => alert);
-          Popup.showToast('aaa', 10);
+          Popup.showBottomSheet('aaa');
           setTimeout(() => {
-            Popup.hideToast().then(() => {
+            Popup.hideBottomSheet().then(() => {
               console.warn('aaa');
             });
           }, 100);
@@ -96,12 +125,12 @@ export default function App() {
         title="快速隐藏再快速显示"
         onPress={() => {
           AppRegistry.registerComponent('aaa', () => alert);
-          Popup.showToast('aaa', 3);
+          Popup.showBottomSheet('aaa');
           setTimeout(() => {
-            Popup.hideToast();
+            Popup.hideBottomSheet();
             setTimeout(() => {
               AppRegistry.registerComponent('bbb', () => alert2);
-              Popup.showToast('bbb', 4);
+              Popup.showBottomSheet('bbb');
             }, 50);
           }, 100);
         }}
@@ -110,12 +139,12 @@ export default function App() {
         title="在隐藏动画执行中显示"
         onPress={() => {
           AppRegistry.registerComponent('aaa', () => alert);
-          Popup.showToast('aaa', 3);
+          Popup.showBottomSheet('aaa');
           setTimeout(() => {
-            Popup.hideToast();
+            Popup.hideBottomSheet();
             setTimeout(() => {
               AppRegistry.registerComponent('bbb', () => alert2);
-              Popup.showToast('bbb', 3);
+              Popup.showBottomSheet('bbb');
             }, 50);
           }, 1000);
         }}
