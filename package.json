@@ -1,5 +1,5 @@
 {
-  "name": "react-native-popup",
+  "name": "@dppo/react-native-popup",
   "version": "0.1.0",
   "description": "react-native popup",
   "main": "lib/commonjs/index",
