@@ -8,6 +8,7 @@
 #import "PopupManager.h"
 #import <FFPopup.h>
 #import <React/RCTRootView.h>
+#import <React/RCTBridge+Private.h>
 
 #define PopWeakObj(o) autoreleasepool{} __weak typeof(o) o##Weak = o;
 
@@ -134,15 +135,17 @@ static PopupManager* _instance = nil;
 {
     if (self.toast) {
         [self.toast setDidFinishShowingBlock:nil];
+        @PopWeakObj(self);
         if (self.toast.isBeingDismissed) {
-            @PopWeakObj(self);
             [self.toast setDidFinishDismissingBlock:^{
                 [selfWeak.toast.contentView removeFromSuperview];
                 selfWeak.toast = nil;
                 [selfWeak showToast:moduleName delay:delay];
             }];
         }else {
-            [self replacePopupContentView:self.toast moduleName:moduleName];
+            [self hideToast:^{
+                [selfWeak showToast:moduleName delay:delay];
+            }];
         }
     }else {
         self.toast = [self showPopup:moduleName showType:FFPopupShowType_FadeIn dismissType:FFPopupDismissType_FadeOut maskType:FFPopupMaskType_Clear delay:delay];
@@ -238,35 +241,10 @@ static PopupManager* _instance = nil;
 
 - (RCTRootView *)getRootView:(NSString *)moduleName
 {
-    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:[self getBridge] moduleName:moduleName initialProperties:nil];
+    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:[RCTBridge currentBridge] moduleName:moduleName initialProperties:nil];
     rootView.frame = [UIScreen mainScreen].bounds;
     rootView.backgroundColor = [UIColor clearColor];
     return rootView;
-}
-
-- (RCTBridge *)getBridge
-{
-    RCTRootView *rootView = (RCTRootView *)[self getMainWindow].rootViewController.view;
-    return rootView.bridge;
-}
-
-- (UIWindow *)getMainWindow
-{
-    id appDelegate = [UIApplication sharedApplication].delegate;
-    if (appDelegate && [appDelegate respondsToSelector:@selector(window)]) {
-        return [appDelegate window];
-    }
-    NSArray *windows = [UIApplication sharedApplication].windows;
-    if ([windows count] == 1) {
-        return [windows firstObject];
-    } else {
-        for (UIWindow *window in windows) {
-            if (window.windowLevel == UIWindowLevelNormal) {
-                return window;
-            }
-        }
-    }
-    return nil;
 }
 
 - (dispatch_queue_t)methodQueue

@@ -29,8 +29,6 @@ typedef void(^dismissBlock)(void);
 
 - (void)hideAllPopup;
 
-- (UIWindow *)getMainWindow;
-
 @end
 
 NS_ASSUME_NONNULL_END

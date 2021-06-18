@@ -164,7 +164,9 @@ class AlertPopup extends CenterPopupView {
   }
 
   public void unmountReactApplication() {
-    rootView.unmountReactApplication();
+    if (null != rootView) {
+      rootView.unmountReactApplication();
+    }
   }
 
   @Override
@@ -181,9 +183,9 @@ class AlertPopup extends CenterPopupView {
   }
 
   @Override
-  public void dismiss() {
+  protected void doAfterDismiss() {
     unmountReactApplication();
-    super.dismiss();
+    super.doAfterDismiss();
   }
 
   @Override
@@ -216,7 +218,9 @@ class BottomSheetPopup extends BottomPopupView {
   }
 
   public void unmountReactApplication() {
-    rootView.unmountReactApplication();
+    if (null != rootView) {
+      rootView.unmountReactApplication();
+    }
   }
 
   @Override
@@ -233,9 +237,9 @@ class BottomSheetPopup extends BottomPopupView {
   }
 
   @Override
-  public void dismiss() {
+  protected void doAfterDismiss() {
     unmountReactApplication();
-    super.dismiss();
+    super.doAfterDismiss();
   }
 
   @Override
