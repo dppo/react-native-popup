@@ -9,7 +9,7 @@ import {
   ToastOptionsProps,
   AlertOptionsProps,
   ActionSheetOptionsProps,
-} from './types.d';
+} from './types';
 
 const alertModuleName = 'alert';
 const toastModuleName = 'toast';

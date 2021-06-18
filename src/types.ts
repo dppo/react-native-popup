@@ -1,4 +1,6 @@
-type PopupType = {
+import type { ComponentProvider, ViewStyle, TextStyle } from 'react-native';
+
+export type PopupType = {
   loading(options: ToastOptionsProps): void;
   success(options: ToastOptionsProps): void;
   error(options: ToastOptionsProps): void;
