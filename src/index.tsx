@@ -1,5 +1,10 @@
 import React from 'react';
-import { AppRegistry, ComponentProvider, NativeModules } from 'react-native';
+import {
+  AppRegistry,
+  ComponentProvider,
+  NativeModules,
+  Platform,
+} from 'react-native';
 import Toast from './components/Toast';
 import Alert from './components/Alert';
 import ActionSheet from './components/ActionSheet';
@@ -65,7 +70,7 @@ const Popup = {
         />
       );
     };
-    Popup.showAlert(() => alert);
+    Popup.showAlert(() => alert, options.dismissOnBackPressed);
   },
   // actionSheet
   actionSheet(options: ActionSheetOptionsProps) {
@@ -89,9 +94,13 @@ const Popup = {
     Popup.showBottomSheet(() => actionSheet);
   },
   // native
-  showAlert(component: ComponentProvider) {
+  showAlert(component: ComponentProvider, dismissOnBackPressed?: boolean) {
     AppRegistry.registerComponent(alertModuleName, component);
-    RNPopup.showAlert(alertModuleName);
+    if (Platform.OS == 'ios') {
+      RNPopup.showAlert(alertModuleName);
+    } else {
+      RNPopup.showAlert(alertModuleName, dismissOnBackPressed ?? true);
+    }
   },
   hideAlert(): Promise<void> {
     return new Promise((resolve) => {

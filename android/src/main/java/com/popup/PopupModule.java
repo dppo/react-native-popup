@@ -31,8 +31,8 @@ public class PopupModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void showAlert(String moduleName) {
-    PopupManager.getInstance().showAlert(getCurrentActivity(), moduleName);
+  public void showAlert(String moduleName, boolean dismissOnBackPressed) {
+    PopupManager.getInstance().showAlert(getCurrentActivity(), moduleName, dismissOnBackPressed);
   }
 
   @ReactMethod

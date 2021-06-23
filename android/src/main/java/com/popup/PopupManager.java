@@ -37,7 +37,7 @@ public class PopupManager {
     return instance;
   }
 
-  public void showAlert(Activity activity, String moduleName) {
+  public void showAlert(Activity activity, String moduleName, boolean dismissOnBackPressed) {
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -47,7 +47,7 @@ public class PopupManager {
           .navigationBarColor(Color.WHITE)
           .dismissOnTouchOutside(false)
           .isRequestFocus(true)
-          .dismissOnBackPressed(true)
+          .dismissOnBackPressed(dismissOnBackPressed)
           .asCustom(alert)
           .show();
       }

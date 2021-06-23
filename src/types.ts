@@ -47,6 +47,7 @@ export interface AlertProps {
   cancelContainerStyle?: ViewStyle;
   cancelTextStyle?: TextStyle;
   containerStyle?: ViewStyle;
+  dismissOnBackPressed?: boolean; // android only
 }
 
 export interface ActionSheetProps {
