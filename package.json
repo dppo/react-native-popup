@@ -1,6 +1,6 @@
 {
   "name": "@dppo/react-native-popup",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "react-native popup",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

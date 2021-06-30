@@ -19,6 +19,7 @@ static PopupManager* _instance = nil;
 @property(nonatomic,strong)FFPopup *alert;
 @property(nonatomic,strong)FFPopup *bottomSheet;
 @property(nonatomic,strong)FFPopup *toast;
+@property(nonatomic,strong)FFPopup *otherBottomSheet;
 
 @end
 
@@ -131,6 +132,55 @@ static PopupManager* _instance = nil;
     }
 }
 
+- (void)showOtherBottomSheet:(nonnull NSString *)moduleName
+{
+    if (self.otherBottomSheet) {
+        [self.otherBottomSheet setDidFinishShowingBlock:nil];
+        if (self.otherBottomSheet.isBeingDismissed) {
+            @PopWeakObj(self);
+            [self.otherBottomSheet setDidFinishDismissingBlock:^{
+                [selfWeak.otherBottomSheet.contentView removeFromSuperview];
+                selfWeak.otherBottomSheet = nil;
+                [selfWeak showOtherBottomSheet:moduleName];
+            }];
+        }else {
+            [self replacePopupContentView:self.otherBottomSheet moduleName:moduleName];
+        }
+    }else {
+        self.otherBottomSheet = [self showPopup:moduleName showType:FFPopupShowType_SlideInFromBottom dismissType:FFPopupDismissType_SlideOutToBottom maskType:FFPopupMaskType_Dimmed delay:0.0];
+        @PopWeakObj(self);
+        [self.otherBottomSheet setDidFinishDismissingBlock:^{
+            [selfWeak.otherBottomSheet.contentView removeFromSuperview];
+            selfWeak.otherBottomSheet = nil;
+        }];
+    }
+}
+
+- (void)hideOtherBottomSheet:(dismissBlock)block
+{
+    if (nil != self.otherBottomSheet) {
+        @PopWeakObj(self);
+        if (self.otherBottomSheet.isBeingShown) {
+            [self.otherBottomSheet setDidFinishShowingBlock:^{
+                [selfWeak hideOtherBottomSheet:block];
+            }];
+        }else {
+            [self.otherBottomSheet setDidFinishDismissingBlock:^{
+                [selfWeak.otherBottomSheet.contentView removeFromSuperview];
+                selfWeak.otherBottomSheet = nil;
+                if (block) {
+                    block();
+                }
+            }];
+            [self.otherBottomSheet dismissAnimated:YES];
+        }
+    }else {
+        if (block) {
+            block();
+        }
+    }
+}
+
 - (void)showToast:(nonnull NSString *)moduleName delay:(int)delay
 {
     if (self.toast) {
@@ -200,6 +250,15 @@ static PopupManager* _instance = nil;
     }
 }
 
+- (void)hideOtherBottomSheetWithoutAnimation
+{
+    if (self.otherBottomSheet) {
+        [self.otherBottomSheet dismissAnimated:NO];
+        [self.otherBottomSheet.contentView removeFromSuperview];
+        self.otherBottomSheet = nil;
+    }
+}
+
 - (void)hideToastWithoutAnimation
 {
     if (self.toast) {
@@ -213,6 +272,7 @@ static PopupManager* _instance = nil;
 {
     [self hideAlertWithoutAnimation];
     [self hideBottomSheetWithoutAnimation];
+    [self hideOtherBottomSheetWithoutAnimation];
     [self hideToastWithoutAnimation];
 }
 

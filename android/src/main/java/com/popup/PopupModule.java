@@ -65,6 +65,23 @@ public class PopupModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void showOtherBottomSheet(String moduleName) {
+    PopupManager.getInstance().showOtherBottomSheet(getCurrentActivity(), moduleName);
+  }
+
+  @ReactMethod
+  public void hideOtherBottomSheet(Promise promise) {
+    PopupManager.getInstance().hideOtherBottomSheet(getCurrentActivity(), new DismissCallBack() {
+      @Override
+      public void doSomeThingDismiss() {
+        if (null != promise) {
+          promise.resolve(Arguments.createMap());
+        }
+      }
+    });
+  }
+
+  @ReactMethod
   public void hideAllPopup() {
     PopupManager.getInstance().hideAllPopup(getCurrentActivity());
   }

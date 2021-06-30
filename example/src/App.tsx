@@ -7,6 +7,87 @@ import {
 } from 'react-native';
 import Popup from '../../src';
 
+const bottomSheet2 = () => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+      }}
+    >
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Popup.hideOtherBottomSheet().then(() => {
+            console.warn('hide');
+          });
+        }}
+      >
+        <View
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}
+        />
+      </TouchableWithoutFeedback>
+      <View
+        style={{
+          backgroundColor: 'yellow',
+          width: 300,
+          height: 300,
+        }}
+      ></View>
+    </View>
+  );
+};
+
+const bottomSheet = () => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+      }}
+    >
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Popup.hideBottomSheet().then(() => {
+            console.warn('hide');
+          });
+        }}
+      >
+        <View
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}
+        />
+      </TouchableWithoutFeedback>
+      <View
+        style={{
+          backgroundColor: 'red',
+          width: 300,
+          height: 300,
+        }}
+      >
+        <Button
+          title="show other"
+          onPress={() => {
+            Popup.showOtherBottomSheet(() => bottomSheet2);
+          }}
+        />
+      </View>
+    </View>
+  );
+};
+
 export default function App() {
   return (
     <View style={styles.container}>
@@ -106,42 +187,6 @@ export default function App() {
       <Button
         title="Show BottomSheet"
         onPress={() => {
-          const bottomSheet = () => {
-            return (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                }}
-              >
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    Popup.hideBottomSheet().then(() => {
-                      console.warn('hide');
-                    });
-                  }}
-                >
-                  <View
-                    style={{
-                      position: 'absolute',
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
-                    }}
-                  />
-                </TouchableWithoutFeedback>
-                <View
-                  style={{
-                    backgroundColor: 'red',
-                    width: 300,
-                    height: 300,
-                  }}
-                />
-              </View>
-            );
-          };
           Popup.showBottomSheet(() => bottomSheet);
         }}
       />

@@ -29,6 +29,18 @@ RCT_EXPORT_METHOD(hideBottomSheet:(RCTPromiseResolveBlock)resolve rejecter:(RCTP
     }];
 }
 
+RCT_EXPORT_METHOD(showOtherBottomSheet:(nonnull NSString *)moduleName)
+{
+    [[PopupManager shareManager] showOtherBottomSheet:moduleName];
+}
+
+RCT_EXPORT_METHOD(hideOtherBottomSheet:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [[PopupManager shareManager] hideOtherBottomSheet:^{
+        resolve(@[]);
+    }];
+}
+
 RCT_EXPORT_METHOD(showToast:(nonnull NSString *)moduleName delay:(int)delay)
 {
     [[PopupManager shareManager] showToast:moduleName delay:delay];

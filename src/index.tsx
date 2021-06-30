@@ -19,6 +19,7 @@ import {
 const alertModuleName = 'alert';
 const toastModuleName = 'toast';
 const bottomSheetModuleName = 'bottom_sheet';
+const otherBottomSheetModuleName = 'other_bottom_sheet';
 
 const RNPopup = NativeModules.Popup;
 // dismiss all popup
@@ -116,6 +117,17 @@ const Popup = {
   hideBottomSheet(): Promise<void> {
     return new Promise((resolve) => {
       RNPopup.hideBottomSheet().then(() => {
+        resolve();
+      });
+    });
+  },
+  showOtherBottomSheet(component: ComponentProvider) {
+    AppRegistry.registerComponent(otherBottomSheetModuleName, component);
+    RNPopup.showOtherBottomSheet(otherBottomSheetModuleName);
+  },
+  hideOtherBottomSheet(): Promise<void> {
+    return new Promise((resolve) => {
+      RNPopup.hideOtherBottomSheet().then(() => {
         resolve();
       });
     });

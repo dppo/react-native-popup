@@ -23,6 +23,10 @@ typedef void(^dismissBlock)(void);
 
 - (void)hideBottomSheet:(dismissBlock)block;
 
+- (void)showOtherBottomSheet:(nonnull NSString *)moduleName;
+
+- (void)hideOtherBottomSheet:(dismissBlock)block;
+
 - (void)showToast:(nonnull NSString *)moduleName delay:(int)delay;
 
 - (void)hideToast:(dismissBlock)block;

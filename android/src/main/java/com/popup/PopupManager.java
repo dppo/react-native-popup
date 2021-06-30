@@ -25,6 +25,7 @@ public class PopupManager {
   private static PopupManager instance;
   private AlertPopup alert;
   private BottomSheetPopup bottomSheet;
+  private BottomSheetPopup otherBottomSheet;
   private AlertPopup toast;
 
   private PopupManager() {
@@ -102,6 +103,38 @@ public class PopupManager {
     });
   }
 
+  public void showOtherBottomSheet(Activity activity, String moduleName) {
+    activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        if (null != otherBottomSheet) otherBottomSheet.dismiss();
+        otherBottomSheet = new BottomSheetPopup(activity, moduleName);
+        new XPopup.Builder(activity)
+          .navigationBarColor(Color.WHITE)
+          .isRequestFocus(true)
+          .dismissOnBackPressed(true)
+          .asCustom(otherBottomSheet)
+          .show();
+      }
+    });
+  }
+
+  public void hideOtherBottomSheet(Activity activity, DismissCallBack dismissCallBack) {
+    activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        if (otherBottomSheet != null) {
+          otherBottomSheet.dismissWith(new Runnable() {
+            @Override
+            public void run() {
+              if (null != dismissCallBack) dismissCallBack.doSomeThingDismiss();
+            }
+          });
+        }
+      }
+    });
+  }
+
   public void showToast(Activity activity, String moduleName, int delay) {
     activity.runOnUiThread(new Runnable() {
       @Override
@@ -144,6 +177,9 @@ public class PopupManager {
     }
     if (null != bottomSheet) {
       bottomSheet.unmountReactApplication();
+    }
+    if (null != otherBottomSheet) {
+      otherBottomSheet.unmountReactApplication();
     }
     if (null != toast) {
       toast.unmountReactApplication();

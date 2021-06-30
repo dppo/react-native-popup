@@ -12,6 +12,8 @@ export type PopupType = {
   hideAlert(): Promise<void>;
   showBottomSheet(component: ComponentProvider): void;
   hideBottomSheet(): Promise<void>;
+  showOtherBottomSheet(component: ComponentProvider): void;
+  hideOtherBottomSheet(): Promise<void>;
   showToast(component: ComponentProvider, delay: number): void;
   hideToast(): void;
 };
